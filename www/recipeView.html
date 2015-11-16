@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!-- Giovanni Romano - 120324160
+	 Matthew Treichel - 120585470 -->
+<html>
+<head>
+	<title>Recipes</title>
+	<!-- jQuery setup -->
+	<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8"></meta>
+		<link rel="stylesheet" href="jquery/jquery.mobile-1.4.5.css" />
+		<link rel="stylesheet" href="css/index.css" />
+		<script src="jquery/jquery-1.11.3.min.js"></script>
+		<script src="jquery/jquery.mobile-1.4.5.js"></script>
+</head>
+
+<body>
+	<!-- header -->
+	<div data-role="header" data-theme="b">
+		<a onclick="goToRecipes()" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l">Back</a>
+		<h1>Recipes</h1>
+		<a onclick="goHome()" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-home">Home</a>
+	</div>
+	
+	<p>Lemon Pie: Baking Powder, Ice Cream, Lemonade</p>
+	<p>Shrimp Casserole: Casserole, Shrimp, Crab Meat</p>
+	
+	<script>
+		function goHome() {
+			$.mobile.changePage( "index.html", { transition: "slide", changeHash: false });
+		}
+		function goToRecipes() {
+			$.mobile.changePage( "recipeMenu.html", { transition: "slide", changeHash: false });
+		}
+	</script>
+</body>
+</html>

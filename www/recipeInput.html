@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!-- Giovanni Romano - 120324160
+	 Matthew Treichel - 120585470 -->
+<html>
+<head>
+	<title>Recipes</title>
+	<!-- jQuery setup -->
+	<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8"></meta>
+		<link rel="stylesheet" href="jquery/jquery.mobile-1.4.5.css" />
+		<link rel="stylesheet" href="css/index.css" />
+		<script src="jquery/jquery-1.11.3.min.js"></script>
+		<script src="jquery/jquery.mobile-1.4.5.js"></script>
+</head>
+
+<body>
+	<!-- header -->
+	<div data-role="header" data-theme="b">
+		<a onclick="goToRecipes()" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l">Back</a>
+		<h1>Recipes</h1>
+		<a onclick="goHome()" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-home">Home</a>
+	</div>
+	
+	<p>New Recipe:</p>
+	
+	<form>
+		<div id="inputs">
+			<label>Name: </label><input name="name" />
+			<label>Ingredient 1: </label><input name="ingredient" />
+		</div>
+		
+		<button type="button" onclick="addIngredient()">+</button>
+		
+		<br />
+		
+		<button type="button" onclick="saveRecipe()">Save</button>
+		
+		<button type="button" onclick="localStorage.clear();">Dev: Clear Local Storage</button>
+		
+		<div id="localRecipes"></div>
+	</form>
+
+	<script>
+		function goHome() {
+			$.mobile.changePage( "index.html", { transition: "slide", changeHash: false });
+		}
+		function goToRecipes() {
+			$.mobile.changePage( "recipeMenu.html", { transition: "slide", changeHash: false });
+		}
+		function addIngredient() {
+			//Need to do some dynamic stuff with the naming but should be easy
+			//Issues with the CSS
+			$("#inputs").append("<label>Ingredient X: </label><input name='ingredient'>");
+		}
+		function saveRecipe() {
+			var recipeName = $("[name='name']").val();
+			var ingredients = $("[name='ingredient']"); //Selects all the Ingredient Inputs as a JQuery Element
+			var ingredient;
+			var ingredientCount = ingredients.length;
+			var ingredientObject = {"recipeName" : recipeName}; //New Object to Store in LocalStorage, probably a better way to do
+			for (var i = 0; i < ingredientCount; i++) {
+				ingredient = ingredients.eq(i); //Grab the Individual Ingredient Input JQuery Elements
+				var ingredientLabel = "ingredient" + i;
+				ingredientObject[ingredientLabel] = ingredient.val();
+			}
+			localStorage.setItem(recipeName, JSON.stringify(ingredientObject)); //JSON sets off a "TypeError: a is undefined in JQuery" unless we do some fix
+		}
+		$(document).ready(function() { 
+			//Load Local Storage for Testing - Some form of this would go on the ViewRecipe page, JSON.parse() would be used for further JavaScript Manipulation
+			var retrievedRecipe;
+			for (var i = 0; i < localStorage.length; i++){
+				retrievedRecipe = localStorage.getItem(localStorage.key(i));
+				$('#localRecipes').append("<p>Retrieved Recipe: " + retrievedRecipe + "</p>");
+			}
+		})
+	</script>
+</body>
+</html>
