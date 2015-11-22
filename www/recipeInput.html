@@ -64,13 +64,16 @@
 			}
 			localStorage.setItem(recipeName, JSON.stringify(ingredientObject)); //JSON sets off a "TypeError: a is undefined in JQuery" unless we do some fix
 		}
-		$(document).ready(function() { 
+		function loadRecipes() {
 			//Load Local Storage for Testing - Some form of this would go on the ViewRecipe page, JSON.parse() would be used for further JavaScript Manipulation
 			var retrievedRecipe;
 			for (var i = 0; i < localStorage.length; i++){
 				retrievedRecipe = localStorage.getItem(localStorage.key(i));
 				$('#localRecipes').append("<p>Retrieved Recipe: " + retrievedRecipe + "</p>");
 			}
+		}
+		$(document).ready(function() { 
+			loadRecipes();
 		})
 	</script>
 </body>
