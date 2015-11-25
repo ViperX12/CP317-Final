@@ -44,21 +44,22 @@
 				selectable: true,
 				selectHelper: true,
 				select: function(start, end) {
+
 					$( "#dialog" ).show();
 					$( "#dialog" ).dialog();
-					
-					var eventData;
-					$("#myButton").click(function(){
+
+					$("#myButton").unbind().click(function(){
+						var eventData;
 						var val = $(".recipeSelect").find(":selected").text();
 						eventData = {
-						title: val,
-						start: start,
-						end: end
+							title: val,
+							start: start,
+							end: end
 						};
 						$('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
 						$( "#dialog" ).hide();
-						$('#calendar').fullCalendar('unselect');
 					});
+					$('#calendar').fullCalendar('unselect');
 				},
 			}); //FullCalendar Plugin
 		});
