@@ -26,16 +26,12 @@
 	<br>
 	<div id="dialog" title="Basic dialog">
 	 <input type="button" value="Select" id="myButton"/>
-	 <select class="recipeSelect">
-	  <option value="volvo">Volvo</option>
-	  <option value="saab">Saab</option>
-	  <option value="mercedes">Mercedes</option>
-	  <option value="audi">Audi</option>
-	</select>
+	 <select id="recipeSelect" class="recipeSelect"></select>
 	</div>
 	<div id="calendar"></div>
 	<script>
 		$( "#dialog" ).hide();
+		loadRecipes();
 		function goHome() {
 			$.mobile.changePage( "index.html", { transition: "slide", changeHash: false });
 		}
@@ -63,6 +59,19 @@
 				},
 			}); //FullCalendar Plugin
 		});
+		
+		function loadRecipes() {
+			var stringDropDowninnerHTML = "<option value='--select--'>--Select--</option>";
+			var retrievedRecipe;
+			var select = document.getElementById('recipeSelect');
+            for (var i = 0; i < localStorage.length; i++) {
+				retrievedRecipe = localStorage.getItem(localStorage.key(i)).split(/,|:/);
+				var opt = document.createElement('option');
+				opt.value = retrievedRecipe[1];
+				opt.innerHTML = retrievedRecipe[1];
+				select.appendChild(opt);
+            }
+		}
 	</script>
 </body>
 </html>
