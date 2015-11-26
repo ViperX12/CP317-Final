@@ -23,53 +23,59 @@
 		<a onclick="goHome()" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-home">Home</a>
 	</div>
 	
-	<br>
-	<div id="dialog" title="Basic dialog">
-	 <input type="button" value="Select" id="myButton"/>
-	 <select id="recipeSelect" class="recipeSelect"></select>
+	<div id="recipePicker" data-role="popup">
+		<select id="recipeSelect"></select>
+		<input type="button" value="Place this Recipe" id="pickRecipeButton"/>
 	</div>
+	
+	<br>
+	
 	<div id="calendar"></div>
 	<script>
-		$( "#dialog" ).hide();
 		loadRecipes();
 		function goHome() {
 			$.mobile.changePage( "index.html", { transition: "slide", changeHash: false });
 		}
 		$(document).ready(function() {
 			$('#calendar').fullCalendar({
+				//Should Load Events from LocalStorage into Calendar
+				//Will also need to update LocalStorage on drag, there's definitely a function for that
+				eventStartEditable : true, //Draggable Events
 				selectable: true,
-				selectHelper: true,
 				select: function(start, end) {
-
-					$( "#dialog" ).show();
-					$( "#dialog" ).dialog();
-
-					$("#myButton").unbind().click(function(){
+					$("#recipePicker").popup("open");
+					$("#pickRecipeButton").unbind().click(function(){
 						var eventData;
-						var val = $(".recipeSelect").find(":selected").text();
+						var val = $("#recipeSelect").find(":selected").text();
 						eventData = {
 							title: val,
 							start: start,
 							end: end
 						};
 						$('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
-						$( "#dialog" ).hide();
+						
+						var dateData = localStorage.getItem(start);
+						if (dateData === null) {
+							localStorage.setItem(start, val); //Will Need to Filter out Dates from Recipes in other areas
+						} else {
+							dateData = dateData.concat("," + val); //Yes, I'm concatenating within concatenating
+							localStorage.setItem(start, dateData);
+						}
+						
+						$("#recipePicker").popup("close");
 					});
-					$('#calendar').fullCalendar('unselect');
 				},
-			}); //FullCalendar Plugin
+			});
 		});
-		
+				
 		function loadRecipes() {
-			var stringDropDowninnerHTML = "<option value='--select--'>--Select--</option>";
-			var retrievedRecipe;
 			var select = document.getElementById('recipeSelect');
-            for (var i = 0; i < localStorage.length; i++) {
+            for (var i = 0, retrievedRecipe = null, option = null; i < localStorage.length; i++) {
 				retrievedRecipe = localStorage.getItem(localStorage.key(i)).split(/,|:/);
-				var opt = document.createElement('option');
-				opt.value = retrievedRecipe[1];
-				opt.innerHTML = retrievedRecipe[1];
-				select.appendChild(opt);
+				option = document.createElement('option');
+				option.value = retrievedRecipe[1];
+				option.innerHTML = retrievedRecipe[1];
+				select.appendChild(option);
             }
 		}
 	</script>
