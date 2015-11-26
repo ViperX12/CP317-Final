@@ -28,6 +28,8 @@
 		<input type="button" value="Place this Recipe" id="pickRecipeButton"/>
 	</div>
 	
+	<br>
+	
 	<div id="calendar"></div>
 	<script>
 		loadRecipes();
@@ -36,11 +38,12 @@
 		}
 		$(document).ready(function() {
 			$('#calendar').fullCalendar({
+				//Should Load Events from LocalStorage into Calendar
+				//Will also need to update LocalStorage on drag, there's definitely a function for that
+				eventStartEditable : true, //Draggable Events
 				selectable: true,
-				selectHelper: true,
 				select: function(start, end) {
 					$("#recipePicker").popup("open");
-
 					$("#pickRecipeButton").unbind().click(function(){
 						var eventData;
 						var val = $("#recipeSelect").find(":selected").text();
@@ -50,17 +53,24 @@
 							end: end
 						};
 						$('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+						
+						var dateData = localStorage.getItem(start);
+						if (dateData === null) {
+							localStorage.setItem(start, val); //Will Need to Filter out Dates from Recipes in other areas
+						} else {
+							dateData = dateData.concat("," + val); //Yes, I'm concatenating within concatenating
+							localStorage.setItem(start, dateData);
+						}
+						
 						$("#recipePicker").popup("close");
 					});
-					$('#calendar').fullCalendar('unselect');
 				},
 			});
 		});
 				
 		function loadRecipes() {
-			var stringDropDowninnerHTML = "<option value='--select--'>--Select--</option>";
 			var select = document.getElementById('recipeSelect');
-            for (var i = 0, retrievedRecipe, option; i < localStorage.length; i++) {
+            for (var i = 0, retrievedRecipe = null, option = null; i < localStorage.length; i++) {
 				retrievedRecipe = localStorage.getItem(localStorage.key(i)).split(/,|:/);
 				option = document.createElement('option');
 				option.value = retrievedRecipe[1];
