@@ -24,15 +24,54 @@
 	</div>
 	
 	<br>
+	<div id="dialog" title="Basic dialog">
+	 <input type="button" value="Select" id="myButton"/>
+	 <select id="recipeSelect" class="recipeSelect"></select>
+	</div>
 	<div id="calendar"></div>
-		
 	<script>
+		$( "#dialog" ).hide();
+		loadRecipes();
 		function goHome() {
 			$.mobile.changePage( "index.html", { transition: "slide", changeHash: false });
 		}
 		$(document).ready(function() {
-			$('#calendar').fullCalendar(); //FullCalendar Plugin
+			$('#calendar').fullCalendar({
+				selectable: true,
+				selectHelper: true,
+				select: function(start, end) {
+
+					$( "#dialog" ).show();
+					$( "#dialog" ).dialog();
+
+					$("#myButton").unbind().click(function(){
+						var eventData;
+						var val = $(".recipeSelect").find(":selected").text();
+						eventData = {
+							title: val,
+							start: start,
+							end: end
+						};
+						$('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+						$( "#dialog" ).hide();
+					});
+					$('#calendar').fullCalendar('unselect');
+				},
+			}); //FullCalendar Plugin
 		});
+		
+		function loadRecipes() {
+			var stringDropDowninnerHTML = "<option value='--select--'>--Select--</option>";
+			var retrievedRecipe;
+			var select = document.getElementById('recipeSelect');
+            for (var i = 0; i < localStorage.length; i++) {
+				retrievedRecipe = localStorage.getItem(localStorage.key(i)).split(/,|:/);
+				var opt = document.createElement('option');
+				opt.value = retrievedRecipe[1];
+				opt.innerHTML = retrievedRecipe[1];
+				select.appendChild(opt);
+            }
+		}
 	</script>
 </body>
 </html>
