@@ -10,6 +10,10 @@
 		<link rel="stylesheet" href="css/index.css" />
 		<script src="jquery/jquery-1.11.3.min.js"></script>
 		<script src="jquery/jquery.mobile-1.4.5.js"></script>
+		<link rel='stylesheet' href='fullcalendar-2.4.0/fullcalendar.css' />
+		<script src='fullcalendar-2.4.0/lib/moment.min.js'></script>
+		<script src='fullcalendar-2.4.0/fullcalendar.js'></script>
+		<script src="js/recipeQuickList.js"></script>
 </head>
 
 <body>
@@ -20,12 +24,17 @@
 		<a onclick="goHome()" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-home">Home</a>
 	</div>
 	
-	<p>Shopping Lists.</p>
+	<div class="content">
+		<p>Shopping Lists.</p>
+	</div>
+	
+	<div id="calendar"></div>
 	
 	<script>
-		function goHome() {
-			$.mobile.changePage( "index.html", { transition: "slide", changeHash: false });
-		}
+		$(document).ready(function() { 
+			loadWeekCalendar();
+			getShoppingList();
+		})
 	</script>
 </body>
 </html>

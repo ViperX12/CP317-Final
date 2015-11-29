@@ -10,6 +10,7 @@
 		<link rel="stylesheet" href="css/index.css" />
 		<script src="jquery/jquery-1.11.3.min.js"></script>
 		<script src="jquery/jquery.mobile-1.4.5.js"></script>
+		<script src="js/recipeQuickList.js"></script>
 </head>
 
 <body>
@@ -36,46 +37,7 @@
 			<button type="button" onclick="saveRecipe()">Save</button>
 			
 			<button type="button" onclick="localStorage.clear(); location.reload();">Dev: Clear Local Storage</button>
-			
-			<div id="localRecipes"></div>
 		</form>
 	</div>
-
-	<script>
-		function goHome() {
-			$.mobile.changePage( "index.html", { transition: "slide", changeHash: false });
-		}
-		function goToRecipes() {
-			$.mobile.changePage( "recipeMenu.html", { transition: "slide", changeHash: false });
-		}
-		function addIngredient() {
-			//Ingredient Numbering should come from Recipes Class
-			$("#inputs").append("<label>Ingredient " + ($("[name='ingredient']").length + 1) + ": </label><input name='ingredient'>");
-			$("#inputs").trigger("create"); //Reloads CSS
-		}
-		function saveRecipe() {
-			var recipeName = $("[name='name']").val();
-			var recipeObject = {"recipeName" : recipeName}; //New Object to Store in LocalStorage, probably a better way to do
-			var ingredients = $("[name='ingredient']"); //Selects all the Ingredient Inputs as a JQuery Element
-			var ingredientCount = ingredients.length;
-			for (var i = 0, ingredient = null, ingredientLabel = ""; i < ingredientCount; i++) {
-				ingredient = ingredients.eq(i); //Grab the Individual Ingredient Input JQuery Elements
-				ingredientLabel = "ingredient" + i;
-				recipeObject[ingredientLabel] = ingredient.val();
-			}
-			localStorage.setItem(recipeName, JSON.stringify(recipeObject)); //JSON sets off a "TypeError: a is undefined in JQuery" unless we do some fix
-			location.reload(); //Reload Page
-		}
-		function loadRecipes() {
-			//Load Local Storage for Testing - Some form of this would go on the ViewRecipe page, JSON.parse() would be used for further JavaScript Manipulation
-			for (var i = 0, retrievedRecipe; i < localStorage.length; i++){
-				retrievedRecipe = localStorage.getItem(localStorage.key(i));
-				$('#localRecipes').append("<p>Retrieved Recipe '" + localStorage.key(i) + "': " + retrievedRecipe + "</p>");
-			}
-		}
-		$(document).ready(function() { 
-			loadRecipes();
-		})
-	</script>
 </body>
 </html>

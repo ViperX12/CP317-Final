@@ -13,6 +13,7 @@
 		<link rel='stylesheet' href='fullcalendar-2.4.0/fullcalendar.css' />
 		<script src='fullcalendar-2.4.0/lib/moment.min.js'></script>
 		<script src='fullcalendar-2.4.0/fullcalendar.js'></script>
+		<script src="js/recipeQuickList.js"></script>
 </head>
 
 <body>
@@ -25,16 +26,5 @@
 	<button onclick="goToCalendar()" class="ui-btn">Calendar</button>
 	<button onclick="goToShoppingLists()" class="ui-btn">Shopping Lists</button>
 	
-	<script>
-		function goToRecipes() {
-			$.mobile.changePage( "recipeMenu.html", { transition: "slide", changeHash: false });
-		}
-		function goToCalendar() {
-			document.location.href = "calendar.html";
-		}
-		function goToShoppingLists() {
-			$.mobile.changePage( "shoppingLists.html", { transition: "slide", changeHash: false });
-		}
-	</script>
 </body>
 </html>

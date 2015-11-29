@@ -13,6 +13,7 @@
 		<link rel='stylesheet' href='fullcalendar-2.4.0/fullcalendar.css' />
 		<script src='fullcalendar-2.4.0/lib/moment.min.js'></script>
 		<script src='fullcalendar-2.4.0/fullcalendar.js'></script>
+		<script src="js/recipeQuickList.js"></script>
 </head>
 
 <body>
@@ -31,53 +32,12 @@
 	<br>
 	
 	<div id="calendar"></div>
+	
 	<script>
-		loadRecipes();
-		function goHome() {
-			$.mobile.changePage( "index.html", { transition: "slide", changeHash: false });
-		}
-		$(document).ready(function() {
-			$('#calendar').fullCalendar({
-				//Should Load Events from LocalStorage into Calendar
-				//Will also need to update LocalStorage on drag, there's definitely a function for that
-				eventStartEditable : true, //Draggable Events
-				selectable: true,
-				select: function(start, end) {
-					$("#recipePicker").popup("open");
-					$("#pickRecipeButton").unbind().click(function(){
-						var eventData;
-						var val = $("#recipeSelect").find(":selected").text();
-						eventData = {
-							title: val,
-							start: start,
-							end: end
-						};
-						$('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
-						
-						var dateData = localStorage.getItem(start);
-						if (dateData === null) {
-							localStorage.setItem(start, val); //Will Need to Filter out Dates from Recipes in other areas
-						} else {
-							dateData = dateData.concat("," + val); //Yes, I'm concatenating within concatenating
-							localStorage.setItem(start, dateData);
-						}
-						
-						$("#recipePicker").popup("close");
-					});
-				},
-			});
+		loadRecipeOptions();
+		$(document).ready( function() {
+			loadCalendar();	
 		});
-				
-		function loadRecipes() {
-			var select = document.getElementById('recipeSelect');
-            for (var i = 0, retrievedRecipe = null, option = null; i < localStorage.length; i++) {
-				retrievedRecipe = localStorage.getItem(localStorage.key(i)).split(/,|:/);
-				option = document.createElement('option');
-				option.value = retrievedRecipe[1];
-				option.innerHTML = retrievedRecipe[1];
-				select.appendChild(option);
-            }
-		}
 	</script>
 </body>
 </html>

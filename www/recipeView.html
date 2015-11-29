@@ -10,6 +10,7 @@
 		<link rel="stylesheet" href="css/index.css" />
 		<script src="jquery/jquery-1.11.3.min.js"></script>
 		<script src="jquery/jquery.mobile-1.4.5.js"></script>
+		<script src="js/recipeQuickList.js"></script>
 </head>
 
 <body>
@@ -20,16 +21,13 @@
 		<a onclick="goHome()" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-home">Home</a>
 	</div>
 	
-	<p>Lemon Pie: Baking Powder, Ice Cream, Lemonade</p>
-	<p>Shrimp Casserole: Casserole, Shrimp, Crab Meat</p>
+	<div class="content">
+	</div>
 	
 	<script>
-		function goHome() {
-			$.mobile.changePage( "index.html", { transition: "slide", changeHash: false });
-		}
-		function goToRecipes() {
-			$.mobile.changePage( "recipeMenu.html", { transition: "slide", changeHash: false });
-		}
+		$(document).ready(function() { 
+			loadRecipes();
+		})
 	</script>
 </body>
 </html>
