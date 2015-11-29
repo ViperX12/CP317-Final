@@ -20,7 +20,7 @@ function isRecipe(localStorageKey) {
 }
 
 function isDate(localStorageKey) {
-	return localStorageKey.indexOf("00:00:00") != -1; //Quick and Dirty, assuming Date Format has this and Recipe Name won't.
+	return localStorageKey.indexOf("00:00:00") !== -1; //Quick and Dirty, assuming Date Format has this and Recipe Name won't.
 }
 
 //Calendar
@@ -135,8 +135,8 @@ function loadRecipes() {
 function formatRecipe(retrievedRecipe) {
 	var recipeString = "";
 	recipeString = recipeString.concat("<p><b>" + retrievedRecipe.recipeName + "</b><br>");
-	for (var prop in retrievedRecipe) {
-		if (prop != "recipeName") recipeString = recipeString.concat(retrievedRecipe[prop] + "<br>");
+	for (var ingredient in retrievedRecipe) {
+		if (ingredient !== "recipeName") recipeString = recipeString.concat(retrievedRecipe[ingredient] + "<br>");
 	}
 	recipeString = recipeString.concat("</p>");
 	return recipeString;
@@ -154,7 +154,38 @@ function loadWeekCalendar() {
 }
 
 function getShoppingList() {
-	console.log($('#calendar').fullCalendar('getDate'));
-	//We should be able to use this somehow to loop through the week and check LocalStorage, but the format is different
-	//moment().toDate();
+	var WEEK_LENGTH = 7;
+	var shoppingList = [];
+	var initialDate = $('#calendar').fullCalendar('getDate');
+	var date = initialDate;
+	for (var i = 0, dateString = ""; i < WEEK_LENGTH; i++) {
+		dateString = date.format("ddd MMM DD YYYY [00:00:00 GMT+0000]")
+		var dateRecipes = localStorage.getItem(dateString);
+		if (dateRecipes !== null) {
+			shoppingList = addIngredientsToList(shoppingList, dateRecipes);
+		}
+		date.add(1, 'days');
+	}
+	printShoppingList(shoppingList);
+}
+
+function addIngredientsToList(shoppingList, dateRecipes) {
+	dateRecipes = dateRecipes.split(/,/);
+	dateRecipes.forEach(function (recipe) {
+		var retrievedRecipe = JSON.parse(localStorage.getItem(recipe));
+		if (retrievedRecipe !== null) {
+			for (var ingredient in retrievedRecipe) {
+				if (ingredient !== "recipeName" && shoppingList.indexOf(retrievedRecipe[ingredient]) === -1) {
+					shoppingList.push(retrievedRecipe[ingredient]);
+				}
+			}
+		}
+	});
+	return shoppingList;
+}
+
+function printShoppingList(shoppingList) {
+	shoppingList.forEach(function (ingredient) {
+		$('.content').append(ingredient + "<br>");
+	});
 }
