@@ -1,2 +1,3 @@
+Edit recipe
 shopping list indgredients need count for multiple of same ingredient
-Draggable events on calendar
+draggable/deletable events on calendar

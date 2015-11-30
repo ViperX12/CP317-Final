@@ -121,6 +121,19 @@ function saveRecipe() {
 	location.reload(); //Reload Page
 }
 
+//RecipeEdit
+function editRecipe() {
+    var recipeName = $("#recipeSelect").find(":selected").text();
+    for (var i = 0, retrievedRecipe = null, option = null; i < localStorage.length; i++) {
+        if (isRecipe(localStorage.key(i))) {
+            retrievedRecipe = localStorage.getItem(localStorage.key(i));
+            if (retrievedRecipe.indexOf(recipeName) > -1) { // returns 1 if string contains given string (i.e. the name of the recipe)
+                // load new recipe form, parse data from recipe and fill form with it
+            }
+        }
+    }
+}
+
 //RecipeDelete
 
 function deleteRecipe() {
