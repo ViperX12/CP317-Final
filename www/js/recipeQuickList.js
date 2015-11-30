@@ -10,7 +10,7 @@ function goToCalendar() {
 	document.location.href = "calendar.html";
 }
 function goToShoppingLists() {
-	$.mobile.changePage( "shoppingLists.html", { transition: "slide", changeHash: false });
+    document.location.href = "shoppingLists.html";
 }
 
 //LocalStorage Checks
@@ -185,7 +185,8 @@ function addIngredientsToList(shoppingList, dateRecipes) {
 }
 
 function printShoppingList(shoppingList) {
+    $('.ShoppingListDiv').html('');
 	shoppingList.forEach(function (ingredient) {
-		$('.content').append(ingredient + "<br>");
+	    $('.ShoppingListDiv').append(ingredient + "<br>");
 	});
 }

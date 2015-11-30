@@ -27,13 +27,21 @@
 	<div class="content">
 		<p>Shopping Lists.</p>
 		<p><div id="calendar"></div></p>
+        <p><div class="ShoppingListDiv"></div></p>
 	</div>
 	
 	<script>
-		$(document).ready(function() { 
-			loadWeekCalendar();
-			getShoppingList();
-		})
+        $(document).ready(function () {
+            loadWeekCalendar();
+            getShoppingList();
+        });
+        $('body').on('click', 'button.fc-prev-button', function () {
+            getShoppingList();
+        });
+
+        $('body').on('click', 'button.fc-next-button', function () {
+            getShoppingList();
+        });
 	</script>
 </body>
 </html>
