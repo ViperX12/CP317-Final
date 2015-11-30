@@ -1,10 +1,10 @@
 //Navigation
 
 function goHome() {
-	$.mobile.changePage( "index.html", { transition: "slide", changeHash: false });
+    document.location.href = "index.html";
 }
 function goToRecipes() {
-	$.mobile.changePage( "recipeMenu.html", { transition: "slide", changeHash: false });
+    document.location.href = "recipeMenu.html";
 }
 function goToCalendar() {
 	document.location.href = "calendar.html";
@@ -46,7 +46,7 @@ function loadCalendar() {
 				
 				var dateData = localStorage.getItem(start);
 				if (dateData === null) {
-					localStorage.setItem(start, title);
+				    localStorage.setItem(start, title);
 				} else {
 					dateData = dateData.concat("," + title); //Yes, I'm concatenating within concatenating
 					localStorage.setItem(start, dateData);
@@ -76,7 +76,7 @@ function loadCalendarEvents() { //Used in loadCalendar()
 	eventsData = [];
 	for (var i = 0, event = null; i < localStorage.length; i++) {
 		if(isDate(localStorage.key(i))) {
-			retrievedRecipes = localStorage.getItem(localStorage.key(i)).split(/,/);
+		    retrievedRecipes = localStorage.getItem(localStorage.key(i)).split(/,/);
 			retrievedRecipes.forEach(function (recipe) {
 				event = { title: recipe, start: localStorage.key(i), textColor: 'white' }
 				eventsData.push(event);
@@ -106,6 +106,7 @@ function addIngredient() {
 	$("#inputs").append("<label>Ingredient " + ($("[name='ingredient']").length + 1) + ": </label><input name='ingredient'>");
 	$("#inputs").trigger("create"); //Reloads CSS
 }
+
 function saveRecipe() {
 	var recipeName = $("[name='name']").val();
 	var recipeObject = {"recipeName" : recipeName};
@@ -118,6 +119,28 @@ function saveRecipe() {
 	}
 	localStorage.setItem(recipeName, JSON.stringify(recipeObject)); //JSON sets off a "TypeError: a is undefined in JQuery" unless we do some fix
 	location.reload(); //Reload Page
+}
+
+//RecipeDelete
+
+function deleteRecipe() {
+    var recipeName = $("#recipeSelect").find(":selected").text();
+    for (var i = 0, retrievedRecipe = null; i < localStorage.length; i++) {
+        if (isRecipe(localStorage.key(i))) {
+            retrievedRecipe = localStorage.getItem(localStorage.key(i));
+            if (retrievedRecipe.indexOf(recipeName) > -1) { // returns 1 if string contains given string (i.e. the name of the recipe)
+                localStorage.removeItem(localStorage.key(i));
+                i = i - 1;
+            }
+        }
+        else if (isDate(localStorage.key(i))) {
+            retrievedRecipe = localStorage.getItem(localStorage.key(i));
+            if (retrievedRecipe.indexOf(recipeName) > -1) { // returns 1 if string contains given string (i.e. the name of the recipe)
+                localStorage.removeItem(localStorage.key(i));
+                i = i - 1;
+            }
+        }
+    }
 }
 
 //RecipeView

@@ -1,0 +1,2 @@
+shopping list indgredients need count for multiple of same ingredient
+Draggable events on calendar

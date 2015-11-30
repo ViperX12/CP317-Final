@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<!-- Giovanni Romano - 120324160
+     Matthew Treichel - 120585470 -->
+<html>
+<head>
+    <title>Recipes</title>
+    <!-- jQuery setup -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8"></meta>
+    <link rel="stylesheet" href="jquery/jquery.mobile-1.4.5.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <script src="jquery/jquery-1.11.3.min.js"></script>
+    <script src="jquery/jquery.mobile-1.4.5.js"></script>
+    <script src="js/recipeQuickList.js"></script>
+</head>
+
+<body>
+    <!-- header -->
+    <div data-role="header" data-theme="b">
+        <a onclick="goToRecipes()" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l">Back</a>
+        <h1>Recipes</h1>
+        <a onclick="goHome()" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-home">Home</a>
+    </div>
+
+    <div>
+        <select id="recipeSelect"></select>
+        <button type="button" onclick="deleteRecipe()">Delete this recipe</button>
+    </div>
+
+    <script>
+        loadRecipeOptions();
+    </script>
+
+</body>
+</html>
