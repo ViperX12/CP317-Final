@@ -21,17 +21,25 @@
 	</div>
 	
 	<button onclick="goToRecipeInput()" class="ui-btn">New Recipe</button>
+    <button onclick="goToRecipeEdit()" class="ui-btn">Edit Recipe</button>
+    <button onclick="goToRecipeDelete()" class="ui-btn">Delete Recipe</button>
 	<button onclick="goToRecipeView()" class="ui-btn">View Recipes</button>
 
 	<script>
 		function goHome() {
-			$.mobile.changePage( "index.html", { transition: "slide", changeHash: false });
+		    document.location.href = "index.html";
 		}
 		function goToRecipeInput() {
-			$.mobile.changePage( "recipeInput.html", { transition: "slide", changeHash: false });
+		    document.location.href = "recipeInput.html";
+		}
+		function goToRecipeEdit() {
+		    document.location.href ="recipeEdit.html";
+		}
+		function goToRecipeDelete() {
+		    document.location.href ="recipeDelete.html";
 		}
 		function goToRecipeView() {
-			$.mobile.changePage( "recipeView.html", { transition: "slide", changeHash: false });
+		    document.location.href = "recipeView.html";
 		}
 	</script>
 </body>
