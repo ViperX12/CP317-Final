@@ -21,10 +21,26 @@
         <a onclick="goHome()" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-home">Home</a>
     </div>
 
-    <div>
+    <div class="content">
         <select id="recipeSelect"></select>
-        <button type="button" onclick="editRecipe()">Edit this recipe</button>
+        <button type="button" onclick="editRecipe()">Edit This Recipe</button>
     </div>
+	
+	<div id="editForm" style="display:none">
+		<p>Edit Recipe:</p>
+		
+		<form>
+			<div id="inputs">
+				<label>Name: <input name="name" /></label>
+			</div>
+			
+			<button type="button" onclick="addIngredient()">+</button>
+			
+			<br />
+			
+			<button type="button" onclick="saveRecipe()">Save</button>
+		</form>
+	</div>
 
     <script>
         loadRecipeOptions();

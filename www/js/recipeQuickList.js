@@ -1,3 +1,6 @@
+//Matt Treichel - 120585470
+//Giovanni Romano - 120324160
+
 //Navigation
 
 function goHome() {
@@ -56,9 +59,7 @@ function loadCalendar() {
 			});
 		},
 		eventDrop: function(event, dayDelta) {
-			//Need to remove old dates spot, using delta? 
-			//moment().toDate(); //olddate.setDate(start.getDate() + dayDelta); //Then search in localStorage
-			console.log(dayDelta); 
+			//Save New Date
 			var start = event.start;
 			var title = event.title;
 			var dateData = localStorage.getItem(start);
@@ -68,6 +69,12 @@ function loadCalendar() {
 				dateData = dateData.concat("," + title);
 				localStorage.setItem(start, dateData);
 			}
+			
+			//Delete Old Date
+			var oldDate = moment(event.start); //This clones (ie. recreates) event.start
+			oldDate.add(-dayDelta.asDays(), 'days');
+			var dateString = oldDate.format("ddd MMM DD YYYY [00:00:00 GMT+0000]");
+			localStorage.removeItem(dateString);
 		}
 	});
 }
@@ -122,38 +129,41 @@ function saveRecipe() {
 }
 
 //RecipeEdit
+
 function editRecipe() {
     var recipeName = $("#recipeSelect").find(":selected").text();
-    for (var i = 0, retrievedRecipe = null, option = null; i < localStorage.length; i++) {
-        if (isRecipe(localStorage.key(i))) {
-            retrievedRecipe = localStorage.getItem(localStorage.key(i));
-            if (retrievedRecipe.indexOf(recipeName) > -1) { // returns 1 if string contains given string (i.e. the name of the recipe)
-                // load new recipe form, parse data from recipe and fill form with it
-            }
-        }
-    }
+    retrievedRecipe = JSON.parse(localStorage.getItem(recipeName));
+	$(".content").html($("#editForm").detach().html()); //Edit Form is Hidden on the Page as a Quick Solution
+	$("[name='name']").val(recipeName); //Set Values of Form from LocalStorage Values
+	for (var ingredient in retrievedRecipe) {
+		if (ingredient !== "recipeName") {
+			addIngredient();
+			$("[name='ingredient']").last().val(retrievedRecipe[ingredient]);
+		}
+	}
+	$("[name='name']").unwrap(); //Some weird glitch causes addIngredient() CSS reload to double wrap the name input, this is a convenient fix
 }
 
 //RecipeDelete
 
 function deleteRecipe() {
     var recipeName = $("#recipeSelect").find(":selected").text();
+	localStorage.removeItem(recipeName); //Remove Recipe from LocalStorage
     for (var i = 0, retrievedRecipe = null; i < localStorage.length; i++) {
-        if (isRecipe(localStorage.key(i))) {
-            retrievedRecipe = localStorage.getItem(localStorage.key(i));
-            if (retrievedRecipe.indexOf(recipeName) > -1) { // returns 1 if string contains given string (i.e. the name of the recipe)
-                localStorage.removeItem(localStorage.key(i));
-                i = i - 1;
-            }
-        }
-        else if (isDate(localStorage.key(i))) {
-            retrievedRecipe = localStorage.getItem(localStorage.key(i));
-            if (retrievedRecipe.indexOf(recipeName) > -1) { // returns 1 if string contains given string (i.e. the name of the recipe)
-                localStorage.removeItem(localStorage.key(i));
-                i = i - 1;
-            }
+        if (isDate(localStorage.key(i))) {
+			retrievedRecipes = localStorage.getItem(localStorage.key(i)).split(/,/);
+			if (retrievedRecipes.length === 1 &&  retrievedRecipes[0] === recipeName) { //Only 1 Recipe
+				localStorage.removeItem(localStorage.key(i));
+			} else { //Search Date Recipe List
+				retrievedRecipes.forEach(function (recipe, index) {
+					if (recipe === recipeName) retrievedRecipes.splice(index, 1); //Remove Recipe from Date
+				});
+				retrievedRecipes = retrievedRecipes.join();
+				localStorage.setItem(localStorage.key(i), retrievedRecipes);
+			}
         }
     }
+	location.reload();
 }
 
 //RecipeView
@@ -180,6 +190,10 @@ function formatRecipe(retrievedRecipe) {
 
 //ShoppingLists
 
+function toTitleCase(string) { //For Consistent Cases for Shopping List Checks
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
+
 function loadWeekCalendar() {
 	$('#calendar').fullCalendar({
 		defaultView: 'basicWeek',
@@ -191,11 +205,11 @@ function loadWeekCalendar() {
 
 function getShoppingList() {
 	var WEEK_LENGTH = 7;
-	var shoppingList = [];
+	var shoppingList = [[],[]]; //shoppingList[0] is Ingredients, shoppingList[1] is Frequency
 	var initialDate = $('#calendar').fullCalendar('getDate');
 	var date = initialDate;
 	for (var i = 0, dateString = ""; i < WEEK_LENGTH; i++) {
-		dateString = date.format("ddd MMM DD YYYY [00:00:00 GMT+0000]")
+		dateString = date.format("ddd MMM DD YYYY [00:00:00 GMT+0000]");
 		var dateRecipes = localStorage.getItem(dateString);
 		if (dateRecipes !== null) {
 			shoppingList = addIngredientsToList(shoppingList, dateRecipes);
@@ -210,9 +224,12 @@ function addIngredientsToList(shoppingList, dateRecipes) {
 	dateRecipes.forEach(function (recipe) {
 		var retrievedRecipe = JSON.parse(localStorage.getItem(recipe));
 		if (retrievedRecipe !== null) {
-			for (var ingredient in retrievedRecipe) {
-				if (ingredient !== "recipeName" && shoppingList.indexOf(retrievedRecipe[ingredient]) === -1) {
-					shoppingList.push(retrievedRecipe[ingredient]);
+			for (var ingredient in retrievedRecipe) { //This section is a bit lazy, should have more variables
+				if (ingredient !== "recipeName" && shoppingList[0].indexOf(toTitleCase(retrievedRecipe[ingredient])) === -1) {
+					shoppingList[0].push(toTitleCase(retrievedRecipe[ingredient]));
+					shoppingList[1].push(1);
+				} else if (ingredient !== "recipeName" && shoppingList[0].indexOf(toTitleCase(retrievedRecipe[ingredient])) !== -1) {
+					shoppingList[1][shoppingList[0].indexOf(toTitleCase(retrievedRecipe[ingredient]))] += 1;
 				}
 			}
 		}
@@ -221,8 +238,8 @@ function addIngredientsToList(shoppingList, dateRecipes) {
 }
 
 function printShoppingList(shoppingList) {
-    $('.ShoppingListDiv').html('');
-	shoppingList.forEach(function (ingredient) {
-	    $('.ShoppingListDiv').append(ingredient + "<br>");
+    $('.shoppingLists').html('');
+	shoppingList[0].forEach(function (ingredient, index) {
+	    $('.shoppingLists').append(ingredient + " x" + shoppingList[1][index] + "<br>");
 	});
 }
