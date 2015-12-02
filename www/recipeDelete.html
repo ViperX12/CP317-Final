@@ -23,7 +23,9 @@
 
     <div>
         <select id="recipeSelect"></select>
-        <button type="button" onclick="deleteRecipe()">Delete this recipe</button>
+        <button type="button" onclick="deleteRecipe()">Delete This Recipe</button>
+		<br>
+		<button type="button" onclick="localStorage.clear(); location.reload();">RESET: Clear All Recipes</button>
     </div>
 
     <script>
