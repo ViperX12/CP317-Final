@@ -19,9 +19,9 @@
 <body>
 	<!-- header -->
 	<div data-role="header" data-theme="b">
-		<a onclick="goHome()" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l">Back</a>
-		<h1>Recipe QuickList</h1>
-		<a onclick="goHome()" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-home">Home</a>
+		<a id="backButton" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l">Back</a>
+		<h1>Shopping Lists</h1>
+		<a id="homeButton" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-home">Home</a>
 	</div>
 	
 	<div class="content">
@@ -31,15 +31,21 @@
 	</div>
 	
 	<script>
+		var menu = new Menu(); //The proxy function is necessary to use an object for an onClick handler
+		$("#backButton").on("click", $.proxy(menu, "goHome"));
+		$("#homeButton").on("click", $.proxy(menu, "goHome"));	
+	
+		var calendar = new Calendar();
+		var shoppingLists = new ShoppingLists();
         $(document).ready(function () {
-            loadWeekCalendar();
-            getShoppingList();
+            calendar.loadWeekCalendar();
+            shoppingLists.getShoppingList();
         });
         $('body').on('click', 'button.fc-prev-button', function () {
-            getShoppingList();
+            shoppingLists.getShoppingList();
         });
         $('body').on('click', 'button.fc-next-button', function () {
-            getShoppingList();
+            shoppingLists.getShoppingList();
         });
 	</script>
 </body>

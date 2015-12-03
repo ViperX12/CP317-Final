@@ -22,9 +22,16 @@
 		<h1>Recipe QuickList</h1>
 	</div>
 	
-	<button onclick="goToRecipes()" class="ui-btn">Recipes</button>
-	<button onclick="goToCalendar()" class="ui-btn">Calendar</button>
-	<button onclick="goToShoppingLists()" class="ui-btn">Shopping Lists</button>
-
+	<button id="recipeButton" class="ui-btn">Recipes</button>
+	<button id="calendarButton" class="ui-btn">Calendar</button>
+	<button id="shoppingListButton" class="ui-btn">Shopping Lists</button>
+	
+	<script>
+		var menu = new Menu(); //The proxy function is necessary to use an object for an onClick handler
+		$("#recipeButton").on("click", $.proxy(menu, "goToRecipes"));
+		$("#calendarButton").on("click", $.proxy(menu, "goToCalendar"));
+		$("#shoppingListButton").on("click", $.proxy(menu, "goToShoppingLists"));
+	</script>
+	
 </body>
 </html>
