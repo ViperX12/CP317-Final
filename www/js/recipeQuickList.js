@@ -4,16 +4,28 @@
 //Navigation
 
 function goHome() {
-    document.location.href = "index.html";
+	document.location.href = "index.html";
 }
 function goToRecipes() {
-    document.location.href = "recipeMenu.html";
+	document.location.href = "recipeMenu.html";
+}
+function goToRecipeInput() {
+	document.location.href = "recipeInput.html";
+}
+function goToRecipeEdit() {
+	document.location.href = "recipeEdit.html";
+}
+function goToRecipeDelete() {
+	document.location.href = "recipeDelete.html";
+}
+function goToRecipeView() {
+	document.location.href = "recipeView.html";
 }
 function goToCalendar() {
 	document.location.href = "calendar.html";
 }
 function goToShoppingLists() {
-    document.location.href = "shoppingLists.html";
+	document.location.href = "shoppingLists.html";
 }
 
 //LocalStorage Checks
@@ -199,6 +211,11 @@ function loadWeekCalendar() {
 		defaultView: 'basicWeek',
 		height: 200,
 		events: loadCalendarEvents(),
+		header: {
+			left:   'title',
+			center: '',
+			right:  'prev,next' //Issues with assigning Today Button an onClick Event
+		},
 		timeFormat: ' ' //Otherwise Prepends '12a' to Loaded Events
 	});
 }
@@ -206,7 +223,7 @@ function loadWeekCalendar() {
 function getShoppingList() {
 	var WEEK_LENGTH = 7;
 	var shoppingList = [[],[]]; //shoppingList[0] is Ingredients, shoppingList[1] is Frequency
-	var initialDate = $('#calendar').fullCalendar('getDate');
+	var initialDate = $('#calendar').fullCalendar('getDate').startOf('week');
 	var date = initialDate;
 	for (var i = 0, dateString = ""; i < WEEK_LENGTH; i++) {
 		dateString = date.format("ddd MMM DD YYYY [00:00:00 GMT+0000]");
