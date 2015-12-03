@@ -66,7 +66,8 @@ function RecipeControl() {
 	this.editRecipe = function() {
 		var recipeName = $("#recipeSelect").find(":selected").text(); //Get Recipe Name to Retrieve
 		retrievedRecipe = JSON.parse(localStorage.getItem(recipeName));
-		$(".content").html($("#editForm").detach().html()); //Edit Form is Hidden on the Page as a Quick Solution, Summoned
+		$("#editSelection").remove(); //Edit Form is Hidden on the Page as a Quick Solution, Selection Removed and Form Summoned
+		$("#editForm").css("display","block"); 
 		$("[name='name']").val(recipeName); //Set Values of Form from LocalStorage Values
 		for (var ingredient in retrievedRecipe) {
 			if (ingredient !== "recipeName") {
@@ -74,7 +75,6 @@ function RecipeControl() {
 				$("[name='ingredient']").last().val(retrievedRecipe[ingredient]);
 			}
 		}
-		$("[name='name']").unwrap(); //Some weird glitch causes addIngredient() CSS reload to double wrap the name input, this is a convenient fix
 	}
 
 	//Use: On Button Click
@@ -88,6 +88,7 @@ function RecipeControl() {
 				retrievedRecipes = localStorage.getItem(localStorage.key(i)).split(/,/);
 				if (retrievedRecipes.length === 1 &&  retrievedRecipes[0] === recipeName) { //Only 1 Recipe
 					localStorage.removeItem(localStorage.key(i));
+					i--;
 				} else { //Search Date Recipe List
 					retrievedRecipes.forEach(function (recipe, index) {
 						if (recipe === recipeName) retrievedRecipes.splice(index, 1); //Remove Recipe from Date
@@ -139,6 +140,7 @@ function Calendar() {
 	//Load FullCalendar Plug-in for Recipe Date Selection
 	this.loadCalendar = function() {
 		$('#calendar').fullCalendar({
+			height: "auto",
 			events: this.loadCalendarEvents(),
 			timeFormat: ' ', //Otherwise Prepends '12a' to Loaded Events
 			eventStartEditable : true, //Draggable Events

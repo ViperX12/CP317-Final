@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!-- Giovanni Romano - 120324160
+	 Matthew Treichel - 120585470 -->
+<html>
+<head>
+	<title>Recipe QuickList</title>
+	<!-- jQuery setup -->
+	<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8"></meta>
+		<link rel="stylesheet" href="jquery/jquery.mobile-1.4.5.css" />
+		<link rel="stylesheet" href="css/index.css" />
+		<script src="jquery/jquery-1.11.3.min.js"></script>
+		<script src="jquery/jquery.mobile-1.4.5.js"></script>
+		<link rel='stylesheet' href='fullcalendar-2.4.0/fullcalendar.css' />
+		<script src='fullcalendar-2.4.0/lib/moment.min.js'></script>
+		<script src='fullcalendar-2.4.0/fullcalendar.js'></script>
+		<script src="js/recipeQuickList.js"></script>
+</head>
+
+<body>
+	<!-- header -->
+	<div data-role="header" data-theme="b">
+		<h1>Recipe QuickList</h1>
+	</div>
+	
+	<button id="recipeButton" class="ui-btn">Recipes</button>
+	<button id="calendarButton" class="ui-btn">Calendar</button>
+	<button id="shoppingListButton" class="ui-btn">Shopping Lists</button>
+	
+	<script>
+		var menu = new Menu(); //The proxy function is necessary to use an object for an onClick handler
+		$("#recipeButton").on("click", $.proxy(menu, "goToRecipes"));
+		$("#calendarButton").on("click", $.proxy(menu, "goToCalendar"));
+		$("#shoppingListButton").on("click", $.proxy(menu, "goToShoppingLists"));
+	</script>
+	
+</body>
+</html>
