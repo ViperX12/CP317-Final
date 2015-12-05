@@ -12,9 +12,8 @@
 		<script src="jquery/jquery.mobile-1.4.5.js"></script>
 		<link rel='stylesheet' href='fullcalendar-2.4.0/fullcalendar.css' />
 		<script src='fullcalendar-2.4.0/lib/moment.min.js'></script>
-		<script src='fullcalendar-2.4.0/fullcalendar.js'></script>
+		<script src='fullcalendar-master/dist/fullcalendar.js'></script>
 		<script src="js/recipeQuickList.js"></script>
-		<script src="js/jquery.ui.touch-punch.min.js"></script>
 </head>
 
 <body>
@@ -30,7 +29,7 @@
 		<input type="button" value="Place this Recipe" id="pickRecipeButton"/>
 	</div>
 	
-	<br>
+	<br/>
 	
 	<div id="calendar"></div>
 	
@@ -43,7 +42,8 @@
 		var recipes = new Recipes();
 		recipes.loadRecipeOptions();
 		$(document).ready( function() {
-			calendar.loadCalendar();	
+		//$(document).on('pageshow', function (event) {
+			calendar.loadCalendar();
 		});
 	</script>
 </body>
