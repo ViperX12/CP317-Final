@@ -20,6 +20,7 @@
 
 var fc = $.fullCalendar = { version: "2.4.0" };
 var fcViews = fc.views = {};
+var dragOnTouchDevices = true;
 
 
 $.fn.fullCalendar = function(options) {

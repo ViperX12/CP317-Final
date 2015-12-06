@@ -1,0 +1,7 @@
+build/temp
+
+# npm modules
+node_modules
+
+# bower components
+lib/*/*

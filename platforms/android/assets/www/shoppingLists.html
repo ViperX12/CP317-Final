@@ -26,6 +26,7 @@
 	
 	<div class="content">
 		<p><div id="calendar"></div></p>
+		<p><b>This Week:</b></p>
         <p><div class="shoppingLists"></div></p>
 	</div>
 	
@@ -37,8 +38,9 @@
 		var calendar = new Calendar();
 		var shoppingLists = new ShoppingLists();
         $(document).ready(function () {
-            calendar.loadWeekCalendar();
-            shoppingLists.getShoppingList();
+		//$(document).on('pageshow', function (event) {
+			calendar.loadWeekCalendar();
+			shoppingLists.getShoppingList();
         });
         $('body').on('click', 'button.fc-prev-button', function () {
             shoppingLists.getShoppingList();

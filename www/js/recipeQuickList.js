@@ -4,7 +4,7 @@
 //Use: On Button Click
 //Page Changing Navigation
 function Menu() {
-	this.goHome = function() { document.location.href = "index.html"; }
+ 	this.goHome = function() { document.location.href = "index.html"; }
 	this.goToRecipes = function() { document.location.href = "recipeMenu.html"; }
 	this.goToRecipeInput = function() { document.location.href = "recipeInput.html"; }
 	this.goToRecipeEdit = function() { document.location.href = "recipeEdit.html"; }
@@ -12,6 +12,15 @@ function Menu() {
 	this.goToRecipeView = function() { document.location.href = "recipeView.html"; }
 	this.goToCalendar = function() { document.location.href = "calendar.html"; }
 	this.goToShoppingLists = function() { document.location.href = "shoppingLists.html"; }
+	//Using $.mobile.changePage without some sort of re-haul of how we do pages leads to errors with document.ready() Javascript use
+/*	this.goHome = function() { $.mobile.changePage( "index.html", { transition: "slide", changeHash: false, reloadPage: true }); }
+	this.goToRecipes = function() { $.mobile.changePage( "recipeMenu.html", { transition: "slide", changeHash: false, reloadPage: true }); }
+ 	this.goToRecipeInput = function() { $.mobile.changePage( "recipeInput.html", { transition: "slide", changeHash: false, reloadPage: true }); }
+	this.goToRecipeEdit = function() { $.mobile.changePage( "recipeEdit.html", { transition: "slide", changeHash: false, reloadPage: true }); }
+	this.goToRecipeDelete = function() { $.mobile.changePage( "recipeDelete.html", { transition: "slide", changeHash: false, reloadPage: true }); }
+	this.goToRecipeView = function() { $.mobile.changePage( "recipeView.html", { transition: "slide", changeHash: false, reloadPage: true }); }
+	this.goToCalendar = function() { $.mobile.changePage( "calendar.html", { transition: "slide", changeHash: false, reloadPage: true }); }
+	this.goToShoppingLists = function() { $.mobile.changePage( "shoppingLists.html", { transition: "slide", changeHash: false, reloadPage: true }); } */
 }
 
 function Recipes() {
@@ -157,7 +166,8 @@ function Calendar() {
 						title: title,
 						start: start,
 						end: end,
-						textColor: 'white'
+						backgroundColor: "#8debb9",
+						textColor: "black"
 					};
 					$('#calendar').fullCalendar('renderEvent', eventData, true); //Save Recipe to Calendar
 					
@@ -220,7 +230,7 @@ function Calendar() {
 			if(this.isDate(localStorage.key(i))) {
 				retrievedRecipes = localStorage.getItem(localStorage.key(i)).split(/,/);
 				retrievedRecipes.forEach(function (recipe) { //Create an Event from Each Recipe on a Date
-					event = { title: recipe, start: localStorage.key(i), textColor: 'white' }
+					event = { title: recipe, start: localStorage.key(i), backgroundColor: "#8debb9", textColor: "black" }
 					eventsData.push(event);
 				});
 			}

@@ -21,8 +21,7 @@
 		<a id="homeButton" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-home">Home</a>
 	</div>
 	
-	<div class="content">
-	</div>
+	<div class="content"></div>
 	
 	<script>
 		var menu = new Menu(); //The proxy function is necessary to use an object for an onClick handler
@@ -30,6 +29,7 @@
 		$("#homeButton").on("click", $.proxy(menu, "goHome"));
 		
 		$(document).ready(function() { 
+		//$(document).on('pagecreate', function (event) {
 			var recipeView = new RecipeView();
 			recipeView.loadRecipes();
 		})
